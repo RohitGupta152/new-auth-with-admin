@@ -18,7 +18,7 @@ connectDB();
 // Define allowed origins for CORS
 const allowedOrigins = [
   process.env.FRONTEND_URL, // From .env (for local or production)
-  'https://react-users-auth.vercel.app', // Your production frontend domain
+  'https://react-auth-with-admin.vercel.app/', // Your production frontend domain
 ];
 
 // Middleware to handle CORS
