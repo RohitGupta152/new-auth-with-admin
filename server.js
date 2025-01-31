@@ -15,13 +15,27 @@ const app = express();
 // Connect to MongoDB
 connectDB();
 
-// Middleware
+// Define allowed origins for CORS
+const allowedOrigins = [
+  process.env.FRONTEND_URL, // From .env (for local or production)
+  'https://react-users-auth.vercel.app', // Your production frontend domain
+];
+
+// Middleware to handle CORS
 app.use(cors({
-    origin: process.env.FRONTEND_URL,
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+  origin: (origin, callback) => {
+    // Check if the origin is allowed
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // Allow cookies to be sent with the request
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // For parsing form data
 
